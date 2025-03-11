@@ -1,63 +1,104 @@
 api:
   endpoint: "https://api.openai.com/v1"
-  key: ""  # 需要用户提供
+  key: ""
   model: "gpt-3.5-turbo"
   max_tokens: 4000
   temperature: 0.7
-  timeout: 30  # API请求超时时间（秒）
-  retry_count: 3  # API请求重试次数
+  timeout: 30
+  retry_count: 3
+
+backup:
+  enabled: true
+  backup_dir: ".backup"
+  max_backups: 5
+  compress: true
+  auto_backup: true
+  backup_interval: 3600
 
 file_matching:
-  include_patterns: ["*.yml", "*.yaml"]
-  exclude_patterns: [".git/**", "node_modules/**", "venv/**"]
-  exclude_dirs: [".git", "node_modules", "venv", "__pycache__"]
-  max_file_size: 10485760  # 10MB，超过此大小的文件将被分块处理
+  include_patterns:
+    - "*.yml"
+    - "*.yaml"
+  exclude_patterns:
+    - ".git/**"
+    - "node_modules/**"
+    - "venv/**"
+  exclude_dirs:
+    - ".git"
+    - "node_modules"
+    - "venv"
+    - "__pycache__"
+  max_file_size: 10485760
 
 translation:
-  chunk_size: 2000  # 每块最大字符数
-  max_concurrent: 3  # 并发翻译数
-  retry_count: 3    # 重试次数
-  retry_delay: 5    # 重试延迟（秒）
-  
+  chunk_size: 2000
+  max_concurrent: 3
+  retry_count: 3
+  retry_delay: 5
+
 blacklist:
-  words: ["API", "URL", "HTTP", "SDK", "ID"]
-  patterns: ["\\$\\{.*?\\}", "\\{\\{.*?\\}\\}"]  # 正则表达式
+  words:
+    - "API"
+    - "URL"
+    - "HTTP"
+    - "SDK"
+    - "ID"
+  patterns:
+    - '\\${.*?}'
+    - '\\{{.*?}}'
   case_sensitive: false
-  preserve_case: true  # 保持原有大小写
+  preserve_case: true
 
 prompts:
-  default: |
-    请将以下YAML内容翻译为中文，遵循以下规则：
-    1. 保持所有键名不变
-    2. 只翻译值部分
-    3. 保持原有格式和缩进
-    4. 保持特殊标记和变量不变
-    5. 使用专业、正式的中文表述
-  templates:
-    - name: "technical"
-      content: |
-        这是技术文档翻译，请遵循以下规则：
-        1. 使用技术领域的专业术语
-        2. 保持专业性和准确性
-        3. 保持原有格式和标记
-    - name: "general"
-      content: |
-        这是普通文本翻译，请遵循以下规则：
-        1. 使用通俗易懂的语言
-        2. 保持语言流畅自然
-        3. 适当本地化表述
+  default: >
+    请将以下YAML内容翻译成中文，保持原有格式和结构不变：
+
+    {text}
+
+    注意事项：
+    1. 只翻译值，不要翻译键名
+    2. 保持原有的缩进和格式
+    3. 不要翻译特殊标记（如变量、占位符等）
+    4. 保持原有的注释，但将注释内容翻译成中文
+  templates: []
 
 progress:
-  save_interval: 30  # 进度保存间隔（秒）
-  save_path: ".progress"  # 进度文件保存路径
-  auto_resume: true  # 是否自动恢复
-  keep_history: true  # 保留历史记录
-  backup: true  # 是否备份原文件
-  backup_suffix: ".bak"  # 备份文件后缀
+  save_interval: 30
+  save_path: ".progress"
+  auto_resume: true
+  keep_history: true
+  backup: true
+  backup_suffix: ".bak"
 
 logging:
-  level: "INFO"  # 日志级别：DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   file: "yaml_translator.log"
-  max_size: 10485760  # 10MB
-  backup_count: 5  # 保留的日志文件数量 
+  max_size: 10485760
+  backup_count: 5
+
+yaml:
+  preserve_quotes: true
+  preserve_comments: true
+  indent: 2
+  width: 80
+  allow_unicode: true
+  default_flow_style: false
+
+display:
+  show_progress: true
+  show_status: true
+  show_errors: true
+  refresh_rate: 0.1
+  use_colors: true
+  status_format: "[{task}] {status}"
+  error_format: "[red]错误: {error}[/]"
+
+retry:
+  max_retries: 3
+  initial_delay: 1.0
+  max_delay: 60.0
+  backoff_factor: 2.0
+  jitter: true
+  retry_on_timeout: true
+  retry_on_connection_error: true 

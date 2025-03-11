@@ -1,25 +1,35 @@
 from .config_manager import (
     APIConfig,
+    BackupConfig,
     BlacklistConfig,
     Config,
     ConfigManager,
+    DisplayConfig,
     FileMatchingConfig,
     LoggingConfig,
     ProgressConfig,
     PromptTemplate,
     PromptsConfig,
+    RetryConfig,
     TranslationConfig,
+    YAMLConfig,
 )
+from .models import ChunkConfig
 
 __all__ = [
     "APIConfig",
+    "BackupConfig",
     "BlacklistConfig",
+    "ChunkConfig",
     "Config",
     "ConfigManager",
+    "DisplayConfig",
     "FileMatchingConfig",
     "LoggingConfig",
     "ProgressConfig",
     "PromptTemplate",
     "PromptsConfig",
+    "RetryConfig",
     "TranslationConfig",
+    "YAMLConfig",
 ] 

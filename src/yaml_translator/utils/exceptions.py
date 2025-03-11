@@ -109,4 +109,11 @@ class BackupError(FileError):
 
 class LoggingError(YAMLTranslatorError):
     """日志相关错误"""
-    pass 
+    pass
+
+
+class DisplayError(YAMLTranslatorError):
+    """显示相关错误"""
+    def __init__(self, message: str, component: Optional[str] = None):
+        super().__init__(message)
+        self.component = component 

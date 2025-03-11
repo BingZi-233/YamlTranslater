@@ -34,6 +34,20 @@ class Logger:
             self._console_handler: Optional[logging.Handler] = None
             self._initialized = True
     
+    def set_level(self, level: str) -> None:
+        """设置日志级别
+        
+        Args:
+            level: 日志级别字符串（DEBUG, INFO, WARNING, ERROR, CRITICAL）
+        """
+        try:
+            level_num = getattr(logging, level.upper())
+            self._logger.setLevel(level_num)
+            if self._console_handler:
+                self._console_handler.setLevel(level_num)
+        except (AttributeError, TypeError) as e:
+            raise LoggingError(f"Invalid log level: {level}")
+    
     def setup(self, config: LoggingConfig, log_dir: Optional[Union[str, Path]] = None) -> None:
         """设置日志配置
         

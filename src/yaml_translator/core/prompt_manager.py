@@ -7,7 +7,7 @@ from pathlib import Path
 from string import Template
 from typing import Any, Dict, List, Optional, Union
 
-from ..config import PromptConfig
+from ..config import PromptsConfig
 from ..utils import PromptError, log
 
 
@@ -25,7 +25,7 @@ class PromptTemplate:
 class PromptManager:
     """提示词管理器"""
 
-    def __init__(self, config: PromptConfig):
+    def __init__(self, config: PromptsConfig):
         """初始化提示词管理器
         
         Args:

@@ -1,6 +1,7 @@
 """
 命令行界面模块
 """
+import json
 import os
 from pathlib import Path
 from typing import List, Optional
@@ -43,6 +44,17 @@ def cli(ctx: click.Context, config: Optional[str], verbose: bool, quiet: bool) -
 
     支持批量翻译YAML文件，保持原有格式和注释，支持黑名单词汇保护。
     """
+    # 加载配置
+    ctx.ensure_object(dict)
+    config_manager = ConfigManager(config)
+    ctx.obj["config"] = config_manager
+    
+    # 加载默认配置
+    config_manager.load()
+    
+    # 配置日志系统
+    log.setup(config_manager.config.logging)
+    
     # 设置日志级别
     if verbose:
         log.set_level("DEBUG")
@@ -50,10 +62,6 @@ def cli(ctx: click.Context, config: Optional[str], verbose: bool, quiet: bool) -
         log.set_level("ERROR")
     else:
         log.set_level("INFO")
-    
-    # 加载配置
-    ctx.ensure_object(dict)
-    ctx.obj["config"] = ConfigManager(config_file=config if config else None)
 
 
 @cli.command()
@@ -652,5 +660,6 @@ def load(ctx: click.Context, file: str) -> None:
         ctx.exit(1)
 
 
-if __name__ == "__main__":
+def main():
+    """主入口函数"""
     cli() 
